@@ -39,12 +39,25 @@ router.get('/profile', function(req, res, next) {
 	}
 })
 
-// GET login
+// GET /logout
+router.get('/logout', function(req, res, next) {
+	if (req.session) {
+		req.session.destroy(function(err) {
+			if (err) {
+				return next(err)
+			} else {
+				return res.redirect('/')
+			}
+		});
+	}
+})
+
+// GET /login
 router.get('/login', function(req, res, next) {
 	return res.render('login', {title: 'Log In' })
 });
 
-// POST login
+// POST /login
 router.post('/login', function(req, res, next) {
 	if (req.body.email && req.body.password) {
 		User.authenticate(req.body.email, req.body.password, function(error, user) {
